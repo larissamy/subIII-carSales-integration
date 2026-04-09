@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-buyers-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-buyers-service
+  template:
+    metadata:
+      labels:
+        app: auth-buyers-service
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: auth-buyers-service
+          image: auth-buyers-service:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: auth-buyers-config
+            - secretRef:
+                name: auth-buyers-secret
+          volumeMounts:
+            - name: auth-buyers-data
+              mountPath: /data
+          readinessProbe:
+            httpGet:
+              path: /swagger-ui/index.html
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /swagger-ui/index.html
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+      volumes:
+        - name: auth-buyers-data
+          emptyDir: {}

@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  auth-buyers-service:
+    build: .
+    container_name: auth-buyers-service
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:sqlite:/data/auth-buyers.db
+      APP_JWT_SECRET: 8a21e9f73f344f6fab18207b15f286ce8a21e9f73f344f6fab18207b15f286ce
+      APP_JWT_EXPIRATION_MINUTES: 120
+    volumes:
+      - auth-buyers-data:/data
+
+volumes:
+  auth-buyers-data:

@@ -1,0 +1,101 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-04-08T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v10.0.0",
+  "resources": [
+    {
+      "_id": "wrk_auth_buyers_service",
+      "_type": "workspace",
+      "name": "Auth Buyers Service",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_auth_buyers_base",
+      "_type": "environment",
+      "parentId": "wrk_auth_buyers_service",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8081",
+        "buyer_id": "",
+        "jwt_token": ""
+      }
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_auth_buyers_service",
+      "name": "Auth"
+    },
+    {
+      "_id": "fld_buyers",
+      "_type": "request_group",
+      "parentId": "wrk_auth_buyers_service",
+      "name": "Buyers"
+    },
+    {
+      "_id": "req_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Register Buyer",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{
+  "name": "Larissa Yamaguchi",
+  "email": "larissa@example.com",
+  "password": "Senha@123"
+}"
+      },
+      "headers": [
+        {"name": "Content-Type", "value": "application/json"}
+      ]
+    },
+    {
+      "_id": "req_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{
+  "email": "larissa@example.com",
+  "password": "Senha@123"
+}"
+      },
+      "headers": [
+        {"name": "Content-Type", "value": "application/json"}
+      ]
+    },
+    {
+      "_id": "req_me",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Me",
+      "method": "GET",
+      "url": "{{ _.base_url }}/auth/me",
+      "headers": [
+        {"name": "Authorization", "value": "Bearer {{ _.jwt_token }}"}
+      ]
+    },
+    {
+      "_id": "req_buyers",
+      "_type": "request",
+      "parentId": "fld_buyers",
+      "name": "List Buyers",
+      "method": "GET",
+      "url": "{{ _.base_url }}/buyers"
+    },
+    {
+      "_id": "req_buyer_by_id",
+      "_type": "request",
+      "parentId": "fld_buyers",
+      "name": "Get Buyer By Id",
+      "method": "GET",
+      "url": "{{ _.base_url }}/buyers/{{ _.buyer_id }}"
+    }
+  ]
+}
