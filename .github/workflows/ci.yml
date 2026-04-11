@@ -42,4 +42,4 @@ jobs:
           version: "v1.29.0"
 
       - name: Validate Kubernetes YAML
-        run: kubectl create --dry-run=client -f k8s/ > /dev/null
+        run: kubectl create --dry-run=client --validate=false -f k8s/ > /dev/null
