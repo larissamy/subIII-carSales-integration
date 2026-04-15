@@ -74,6 +74,28 @@ mvn clean package -DskipTests
 mvn spring-boot:run
 ```
 
+## Docker
+
+```bash
+mvn clean package -DskipTests
+docker build -t auth-buyers-service:local .
+docker run --rm -p 8081:8081 auth-buyers-service:local
+```
+
+Ou com Docker Compose:
+
+```bash
+docker compose up
+```
+
+## Kubernetes
+
+```bash
+kubectl apply -f k8s/
+kubectl get pods
+kubectl port-forward svc/auth-buyers-service 8081:80
+```
+
 API disponível em:
 - `http://localhost:8081`
 
@@ -118,28 +140,6 @@ Authorization: Bearer <token>
 
 ### 4. Listar compradores
 `GET /buyers`
-
-## Docker
-
-```bash
-mvn clean package -DskipTests
-docker build -t auth-buyers-service:local .
-docker run --rm -p 8081:8081 auth-buyers-service:local
-```
-
-Ou com Docker Compose:
-
-```bash
-docker compose up
-```
-
-## Kubernetes
-
-```bash
-kubectl apply -f k8s/
-kubectl get pods
-kubectl port-forward svc/auth-buyers-service 8081:80
-```
 
 ## Deploy automatizado
 
